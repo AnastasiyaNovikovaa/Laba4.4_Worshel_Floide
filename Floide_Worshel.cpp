@@ -3,19 +3,18 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include <algorithm>
 #include <fstream>
 #include "Floide_Worshel.h"
 using namespace std;
 #pragma once
 
-vector<string> read_file(const string& file)// вектор строк на выходе
+vector<string> read_file(const string& file)// РІРµРєС‚РѕСЂ СЃС‚СЂРѕРє РЅР° РІС‹С…РѕРґРµ
 {
 	
-	vector<string> strings;    //создаем вектор строк
+	vector<string> strings;    //СЃРѕР·РґР°РµРј РІРµРєС‚РѕСЂ СЃС‚СЂРѕРє
 	fstream input_file(file);
 	
-    if (input_file.is_open())  //если файл был открыт,считываем
+    if (input_file.is_open())  //РµСЃР»Рё С„Р°Р№Р» Р±С‹Р» РѕС‚РєСЂС‹С‚,СЃС‡РёС‚С‹РІР°РµРј
 	{
 		while (!input_file.eof()) {
 			string line;
@@ -25,53 +24,53 @@ vector<string> read_file(const string& file)// вектор строк на выходе
 		}
 	}
 	else
-		throw runtime_error("Sorry, do not open file");
+		throw out_of_range("Sorry, do not open file");
 	input_file.close();
 	return strings;
 }
 
 
-void make_matrix(string str, List<string>* vertices, unsigned short** matrix) 
+void make_matrix(string str, List<string>* vertices, unsigned short** matrix)// РјР°С‚СЂРёС†Р° СЃРѕ РІСЃРµРјРё РїСѓС‚СЏРјРё 
 {
 	short flag = 0;
 	unsigned short city_1, city_2;
-	string v_name = "";  //название вершины
-	string weight = "";   //вес ребра между вершинами
+	string v_name = "";  //РЅР°Р·РІР°РЅРёРµ РІРµСЂС€РёРЅС‹
+	string weight = "";   //РІРµСЃ СЂРµР±СЂР° РјРµР¶РґСѓ РІРµСЂС€РёРЅР°РјРё
 	for (int i = 0; i < str.size() + 1; i++)
 	{
-		if (flag == 0) //записываем первый город
+		if (flag == 0) //Р·Р°РїРёСЃС‹РІР°РµРј РїРµСЂРІС‹Р№ РіРѕСЂРѕРґ
 		{
 			if (str[i] != ';')
-				v_name += str[i];  //считываем посимвольно название города, как только полностью считали,записываем его city_1
+				v_name += str[i];  //СЃС‡РёС‚С‹РІР°РµРј РїРѕСЃРёРјРІРѕР»СЊРЅРѕ РЅР°Р·РІР°РЅРёРµ РіРѕСЂРѕРґР°, РєР°Рє С‚РѕР»СЊРєРѕ РїРѕР»РЅРѕСЃС‚СЊСЋ СЃС‡РёС‚Р°Р»Рё,Р·Р°РїРёСЃС‹РІР°РµРј РµРіРѕ city_1
 			else {
 				city_1 = vertices->find(v_name);
 				flag++;
 				v_name = "";
 			}
 		}
-		else if (flag == 1) //записываем второй город 
+		else if (flag == 1) //Р·Р°РїРёСЃС‹РІР°РµРј РІС‚РѕСЂРѕР№ РіРѕСЂРѕРґ 
 		{
 			if (str[i] != ';')
 				v_name += str[i];
 			else {
-				city_2 = vertices->find(v_name);//возвращает индекс города
+				city_2 = vertices->find(v_name);//РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РіРѕСЂРѕРґР°
 				flag++;
 			}
 		}
 		else if (flag == 2) 
 		{
-			if (str[i] != ';')//цена туда
+			if (str[i] != ';')//С†РµРЅР° С‚СѓРґР°
 				weight += str[i];
 			else {
 				if (weight != "N/A")
-					matrix[city_1][city_2] =stoi(weight);//записываем вес, преобразование строки в число
+					matrix[city_1][city_2] =stoi(weight);//Р·Р°РїРёСЃС‹РІР°РµРј РІРµСЃ, РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ СЃС‚СЂРѕРєРё РІ С‡РёСЃР»Рѕ
 				flag++;
 				weight = "";
 			}
 		}
 		else {
 			if (str[i] != '\0')
-				weight += str[i];//цена назад
+				weight += str[i];//С†РµРЅР° РЅР°Р·Р°Рґ
 			else {
 				if (weight != "N/A")
 					matrix[city_2][city_1] = stoi(weight);
@@ -79,11 +78,11 @@ void make_matrix(string str, List<string>* vertices, unsigned short** matrix)
 		}
 	}
 }
-void getting_cities(string str, List <string> *cities)  //разложение строки на отедльные данные
+void getting_cities(string str, List <string> *cities)  //Р·Р°РїРѕР»РЅСЏРµРј СЃРїРёСЃРѕРє РіРѕСЂРѕРґР°РјРё
 {  
-	//вектор и список
+	//РІРµРєС‚РѕСЂ Рё СЃРїРёСЃРѕРє
 	
-	string name_of_cities = "";   //название города
+	string name_of_cities = "";   //РЅР°Р·РІР°РЅРёРµ РіРѕСЂРѕРґР°
 	short flag = 0;
 	unsigned i = 0;
 	while (flag < 2) {
@@ -91,7 +90,7 @@ void getting_cities(string str, List <string> *cities)  //разложение строки на о
 			name_of_cities += str[i];
 		else {
 			flag++;
-			if (!cities->is_in(name_of_cities))//если этого элемента нет,добавляем в список
+			if (!cities->is_in(name_of_cities))//РµСЃР»Рё СЌС‚РѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµС‚,РґРѕР±Р°РІР»СЏРµРј РІ СЃРїРёСЃРѕРє
 			{
 				cities->push_back(name_of_cities);
 			}
@@ -100,8 +99,20 @@ void getting_cities(string str, List <string> *cities)  //разложение строки на о
 		i++;
 	}
 }
-unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) {
-	//делаем копию матрицы смежности
+unsigned short minimal_way(string city1, string city2, unsigned short** matrix2, List<std::string>* cities) {
+	setlocale(LC_ALL, "rus");
+	int town1, town2;
+	town1 = cities->find(city1);
+	town2 = cities->find(city2);
+	if ((town1 == -1) || (town2 == -1))
+		throw out_of_range("Р“РѕСЂРѕРґ РЅРµ РЅР°Р№РґРµРЅ");
+	
+	return matrix2[town1][town2];
+}
+unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) //СЃРѕР·РґР°РµРј РјР°С‚СЂРёС†Сѓ СЃ РЅР°РёРјРµРЅСЊС€РёРјРё РІРµСЃР°РјРё
+{
+	setlocale(LC_ALL, "rus");
+	//РґРµР»Р°РµРј РєРѕРїРёСЋ РјР°С‚СЂРёС†С‹ СЃРјРµР¶РЅРѕСЃС‚Рё
 	unsigned short** min_paths = new unsigned short* [v_num];
 	for (int i = 0; i < v_num; i++)
 		min_paths[i] = new unsigned short[v_num];
@@ -110,7 +121,7 @@ unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) {
 			min_paths[i][j] = matrix[i][j];
 	}
 
-
+	//РІС‹С‡РёСЃР»СЏРµРј РјР°С‚СЂРёС†Сѓ РєСЂР°С‚С‡Р°Р№С€РёС… РІРµСЃРѕРІ
 	for (int k = 1; k < v_num; k++) {
 		for (int i = 0; i < v_num; i++) {
 			for (int j = 0; j < v_num; j++) {
@@ -121,24 +132,26 @@ unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) {
 	}
 	return min_paths;
 }
-void print_matrix(size_t v_num, unsigned short** matrix) {
+void print_matrix(size_t v_num, unsigned short** matrix) //РІС‹РІРѕРґ РјР°С‚СЂРёС†С‹
+{
 	for (int i = 0; i < v_num; i++) {
 		for (int j = 0; j < v_num; j++) {
 			if (matrix[i][j] == 65535)
-				cout << "--" << ' ';
+				cout << "N/A" << ' ';
 			else
 				cout << matrix[i][j] << ' ';
 		}
 		cout <<endl;
 	}
 }
-void make_matrix_bases(unsigned short** matr, size_t size) {
+void make_matrix_bases(unsigned short** matr, size_t size) //СЃРѕР·РґР°РЅРёРµ Р±Р°Р·РѕРІРѕР№ РјР°С‚СЂРёС†С‹
+{
 	
-	for (int i = 0; i < size; i++)  //создаем двумерную матрицу
+	for (int i = 0; i < size; i++)  //СЃРѕР·РґР°РµРј РґРІСѓРјРµСЂРЅСѓСЋ РјР°С‚СЂРёС†Сѓ
 	{
 		matr[i] = new unsigned short[size];
 	}
-	//заполняем нашу матрицу
+	//Р·Р°РїРѕР»РЅСЏРµРј РЅР°С€Сѓ РјР°С‚СЂРёС†Сѓ
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			matr[i][j] = 65535;
