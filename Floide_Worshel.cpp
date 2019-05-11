@@ -59,7 +59,7 @@ void make_matrix(string str, List<string>* vertices, unsigned short** matrix)// 
 		}
 		else if (flag == 2) 
 		{
-			if (str[i] != ';')//цена туда
+			if (str[i] != ';')
 				weight += str[i];
 			else {
 				if (weight != "N/A")
