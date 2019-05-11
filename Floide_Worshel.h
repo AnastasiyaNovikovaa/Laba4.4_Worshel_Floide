@@ -6,10 +6,10 @@
 
 using namespace std;
 
-vector<string> read_file(const string& FILEPATH); //считывание данных из файла
-void getting_cities(string str, List<string>* vertex);  //получение городов и забивка в список
-void make_matrix_bases(unsigned short** matr, size_t v_num); // создание скелета матрицы
-void make_matrix(string str, List<string>* vertices, unsigned short** matrix);// матрица всех путей с прямыми перелетами
-void print_matrix(size_t v_num, unsigned short** matrix); //вывод матрицы
+vector<string> read_file(const string& FILEPATH); //reading data from a file
+void getting_cities(string str, List<string>* vertex);  //getting cities and scoring in the list
+void make_matrix_bases(unsigned short** matr, size_t v_num); // the creation of the skeleton matrix
+void make_matrix(string str, List<string>* vertices, unsigned short** matrix);// matrix of all routes with direct flights
+void print_matrix(size_t v_num, unsigned short** matrix); //the output matrix
 unsigned short minimal_way(string sity1, string sity2, unsigned short** matrix2, List<std::string>* sities);
-unsigned short** find_min_paths(size_t v_num, unsigned short** matrix);  //создание матрицы с минимальными ценами
+unsigned short** find_min_paths(size_t v_num, unsigned short** matrix);  //create a matrix with minimum prices
