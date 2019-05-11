@@ -8,13 +8,13 @@
 using namespace std;
 #pragma once
 
-vector<string> read_file(const string& file)// вектор строк на выходе
+vector<string> read_file(const string& file)// output string vector
 {
 	
-	vector<string> strings;    //создаем вектор строк
+	vector<string> strings;    //create a string vector
 	fstream input_file(file);
 	
-    if (input_file.is_open())  //если файл был открыт,считываем
+    if (input_file.is_open())  //if the file was opened,read
 	{
 		while (!input_file.eof()) {
 			string line;
@@ -30,30 +30,30 @@ vector<string> read_file(const string& file)// вектор строк на вы
 }
 
 
-void make_matrix(string str, List<string>* vertices, unsigned short** matrix)// матрица со всеми путями 
+void make_matrix(string str, List<string>* vertices, unsigned short** matrix)// matrix with all paths
 {
 	short flag = 0;
 	unsigned short city_1, city_2;
-	string v_name = "";  //название вершины
-	string weight = "";   //вес ребра между вершинами
+	string v_name = "";  //name of the peak
+	string weight = "";   //the weight of the edge between nodes
 	for (int i = 0; i < str.size() + 1; i++)
 	{
-		if (flag == 0) //записываем первый город
+		if (flag == 0) //record the first city
 		{
 			if (str[i] != ';')
-				v_name += str[i];  //считываем посимвольно название города, как только полностью считали,записываем его city_1
+				v_name += str[i];  //read the name of the city symbolically, as soon as it is fully considered,write itity_1
 			else {
 				city_1 = vertices->find(v_name);
 				flag++;
 				v_name = "";
 			}
 		}
-		else if (flag == 1) //записываем второй город 
+		else if (flag == 1) //record the second city
 		{
 			if (str[i] != ';')
 				v_name += str[i];
 			else {
-				city_2 = vertices->find(v_name);//возвращает индекс города
+				city_2 = vertices->find(v_name);//returns the index of the city
 				flag++;
 			}
 		}
@@ -63,14 +63,14 @@ void make_matrix(string str, List<string>* vertices, unsigned short** matrix)// 
 				weight += str[i];
 			else {
 				if (weight != "N/A")
-					matrix[city_1][city_2] =stoi(weight);//записываем вес, преобразование строки в число
+					matrix[city_1][city_2] =stoi(weight);//write the weight, convert the string to a number
 				flag++;
 				weight = "";
 			}
 		}
 		else {
 			if (str[i] != '\0')
-				weight += str[i];//цена назад
+				weight += str[i];//price back
 			else {
 				if (weight != "N/A")
 					matrix[city_2][city_1] = stoi(weight);
@@ -78,11 +78,11 @@ void make_matrix(string str, List<string>* vertices, unsigned short** matrix)// 
 		}
 	}
 }
-void getting_cities(string str, List <string> *cities)  //заполняем список городами
+void getting_cities(string str, List <string> *cities)  //fill the list of cities
 {  
 	//вектор и список
 	
-	string name_of_cities = "";   //название города
+	string name_of_cities = "";   //city name
 	short flag = 0;
 	unsigned i = 0;
 	while (flag < 2) {
@@ -90,7 +90,7 @@ void getting_cities(string str, List <string> *cities)  //заполняем с�
 			name_of_cities += str[i];
 		else {
 			flag++;
-			if (!cities->is_in(name_of_cities))//если этого элемента нет,добавляем в список
+			if (!cities->is_in(name_of_cities))//if this element is not present,add to the list
 			{
 				cities->push_back(name_of_cities);
 			}
@@ -109,10 +109,10 @@ unsigned short minimal_way(string city1, string city2, unsigned short** matrix2,
 	
 	return matrix2[town1][town2];
 }
-unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) //создаем матрицу с наименьшими весами
+unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) //create a matrix with the smallest weights
 {
 	setlocale(LC_ALL, "rus");
-	//делаем копию матрицы смежности
+	//make a copy of the adjacency matrix
 	unsigned short** min_paths = new unsigned short* [v_num];
 	for (int i = 0; i < v_num; i++)
 		min_paths[i] = new unsigned short[v_num];
@@ -121,7 +121,7 @@ unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) //соз�
 			min_paths[i][j] = matrix[i][j];
 	}
 
-	//вычисляем матрицу кратчайших весов
+	//calculate the matrix of shortest weights
 	for (int k = 1; k < v_num; k++) {
 		for (int i = 0; i < v_num; i++) {
 			for (int j = 0; j < v_num; j++) {
@@ -132,7 +132,7 @@ unsigned short** find_min_paths(size_t v_num, unsigned short** matrix) //соз�
 	}
 	return min_paths;
 }
-void print_matrix(size_t v_num, unsigned short** matrix) //вывод матрицы
+void print_matrix(size_t v_num, unsigned short** matrix) //matrix output
 {
 	for (int i = 0; i < v_num; i++) {
 		for (int j = 0; j < v_num; j++) {
@@ -144,14 +144,14 @@ void print_matrix(size_t v_num, unsigned short** matrix) //вывод матри
 		cout <<endl;
 	}
 }
-void make_matrix_bases(unsigned short** matr, size_t size) //создание базовой матрицы
+void make_matrix_bases(unsigned short** matr, size_t size) //create base matrix
 {
 	
-	for (int i = 0; i < size; i++)  //создаем двумерную матрицу
+	for (int i = 0; i < size; i++)  //create a two-dimensional matrix
 	{
 		matr[i] = new unsigned short[size];
 	}
-	//заполняем нашу матрицу
+	//fill in our matrix
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			matr[i][j] = 65535;
