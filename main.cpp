@@ -13,14 +13,14 @@ int main(int argc, char* argv[]) {
 	cout << "Работу выполнила Новикова Анастасия, гр.7302\n";
 	cout << endl;
 	vector<string> strings_for_reading;
-	auto* cities = new List<string>;  //вершины графа
-	unsigned short** matrix_all_itinerary;  // матрица всех путей
-	unsigned short** min_itenerary;  //матрица минимальных путей
+	auto* cities = new List<string>;  //graph vertex
+	unsigned short** matrix_all_itinerary;  // matrix of all paths
+	unsigned short** min_itenerary;  //minimum path matrix
 
-	strings_for_reading = read_file("Input.txt"); //считываем данные из файла
+	strings_for_reading = read_file("Input.txt"); //read data from file
 
 	for (int i = 0; i < strings_for_reading.size(); i++) {
-		getting_cities(strings_for_reading[i], cities);  //Получение всех городов
+		getting_cities(strings_for_reading[i], cities);  //Getting all cities
 	}
 	
 	cout << endl << "Список всех городов: ";
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 	cout << "Количество считанных городов:" << num << "\n";
 	matrix_all_itinerary = new unsigned short* [cities->get_size()]; 
 	
-	make_matrix_bases(matrix_all_itinerary, cities->get_size());//матрица всех путей
+	make_matrix_bases(matrix_all_itinerary, cities->get_size());//matrix of all paths
 
 	for (int i = 0; i < strings_for_reading.size(); i++) {
 		make_matrix(strings_for_reading[i], cities, matrix_all_itinerary);
